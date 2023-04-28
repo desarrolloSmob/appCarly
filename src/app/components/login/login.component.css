@@ -1,0 +1,15 @@
+.login,
+.image {
+  min-height: 100vh;
+}
+
+.bg-image {
+  background-image: url('../../../assets/carpitalLogo.jpg');
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: auto;
+}
+.invalid-feedback
+{
+  margin-left: 25px;
+}

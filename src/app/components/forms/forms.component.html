@@ -1,0 +1,95 @@
+<mat-toolbar class="mat-elevation-z8">
+    <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+        <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+        <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+    </button>
+    Nueva Solicitud
+</mat-toolbar>
+<mat-sidenav-container>
+    <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+        <app-menu name="{{name}}" profile="{{typeUser}}"></app-menu>
+    </mat-sidenav>
+    <mat-sidenav-content>
+
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <span class="titulo">Nueva Solicitud</span>
+                            <hr>
+                            <div class="row mb-2" *ngIf="viewPhoto">
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-primary" (click)="takePhoto()"><i class="fa-solid fa-camera"></i></button>
+                                    <button type="button"class="btn btn-success"  (click)="proceesPhoto()"><i class="fa-solid fa-file-import"></i></button>
+                                    <button class="btn btn-warning" (click)="switchCamera()" *ngIf="this.cameras.length > 1"><i class="fa-solid fa-camera-rotate"></i></button>
+                                </div>
+                            </div>
+                            <div class="row mb-2" *ngIf="viewPhoto">
+                                <div class="col">
+                                    
+                                    <video #videoElement  width="500" height="400"></video>
+                                    <canvas #canvasElement width="500" height="400"></canvas>
+                                </div>
+                            </div>
+                            
+                            <form [formGroup]="newFormRequest" (ngSubmit)="addRequest()" *ngIf="!viewPhoto">
+
+                                <!-- 2 column grid layout with text inputs for the first and last names -->
+                                <div class="row mb-2">
+                                    <div class="col">
+                                        <!-- Email input -->
+                                        <div class="form-outline mb-4">
+                                            <mat-form-field class="example-full-width" appearance="fill">
+                                                <mat-label>NIV</mat-label>
+                                                <input matInput placeholder="" type="text" formControlName="textNiv"
+                                                    id="textNiv" class="toUpper">
+                                            </mat-form-field>
+                                            <div class="text-danger"
+                                                *ngIf="newFormRequest.get('textNiv')?.hasError('required') && newFormRequest.get('textNiv')?.touched">
+                                                <span>El NIV es <strong>obligatorio</strong> </span>
+                                            </div>
+
+                                            <button type="button" class="btn btn-primary"
+                                                (click)="startCamera('VIN')"><i class="fa-solid fa-camera"></i></button>
+                                        </div>
+                                    </div>
+
+                                    <div class="col">
+                                        <!-- Email input -->
+                                        <div class="form-outline mb-4">
+                                            <mat-form-field class="example-full-width" appearance="fill">
+                                                <mat-label># Motor</mat-label>
+                                                <input matInput placeholder="" type="text" formControlName="numberMotor"
+                                                    id="numberMotor" class="toUpper">
+                                            </mat-form-field>
+
+                                            <div class="text-danger"
+                                                *ngIf="newFormRequest.get('numberMotor')?.hasError('required') && newFormRequest.get('numberMotor')?.touched">
+                                                <span>El # de motor es <strong>obligatorio</strong> </span>
+                                            </div>
+                                            <button type="button" class="btn btn-primary"
+                                                (click)="startCamera('Motor')"><i
+                                                    class="fa-solid fa-camera"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Submit button -->
+                                <div class="mb-3">
+                                    <button class="btn btn-success  float-end" [disabled]="newFormRequest.invalid"
+                                        type="submit">Guardar</button>
+                                    <button class="btn btn-primary  float-start" routerLink="/home">Volver</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </mat-sidenav-content>
+</mat-sidenav-container>
+
+<ngx-spinner bdColor="rgba(0,0,0,0.8)" size="medium" color="#fff" type="ball-scale-multiple" [fullScreen]="true">
+    <p style="color: white"> Cargando... </p>
+</ngx-spinner>

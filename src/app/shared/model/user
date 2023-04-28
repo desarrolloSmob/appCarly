@@ -1,0 +1,14 @@
+export interface User {
+    uid: string;
+    email: string;
+    displayName: string;
+    photoURL: string;
+    name: string;
+    type: string;
+    emailVerified: boolean;
+    groupUser:string;
+    groupName:string;
+    position:string;
+    distribuidoresGroup:string;
+  }
+  

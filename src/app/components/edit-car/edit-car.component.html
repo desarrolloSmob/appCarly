@@ -1,0 +1,153 @@
+<mat-toolbar class="mat-elevation-z8">
+    <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+        <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+        <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+    </button>
+    Solicitudes
+</mat-toolbar>
+
+<mat-sidenav-container>
+    <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+        <app-menu name="{{name}}" profile="{{typeUser}}"></app-menu>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div class="content mat-elevation-z8">
+            <div class="container-fluid">
+                <br><br>
+                <div class="row">
+                    <div class="col-md-10 offset-md-1">
+                        <div class="row">
+                            <div class="col">
+                                VIN:{{car.vin}}
+                            </div>
+                            <div class="col">
+                                # Motor: {{car.numMotor}}
+                            </div>
+                            <div class="col">
+                                Valido:{{car.valid}}
+                            </div>
+                            <hr *ngIf="car.valid">
+                            <div class="col-md-12 text-center" *ngIf="car.valid">
+                                <h1>Información del NIV</h1>
+                            </div>
+                            <div class="col text-center" *ngIf="car.valid">
+                                Año Modelo:<br>{{car.vin_info.ano_modelo}}
+                            </div>
+                            <div class="col text-center" *ngIf="car.valid">
+                                Fabricante:<br>{{car.vin_info.fabricante}}
+                            </div>
+                            <div class="col text-center" *ngIf="car.valid">
+                                # Serie:<br>{{car.vin_info.num_serie}}
+                            </div>
+                            <div class="col text-center" *ngIf="car.valid">
+                                País:<br>{{car.vin_info.pais}}
+                            </div>
+                        </div>
+                        <br><br>
+                            <div class="row">
+                            <div class="col text-center" *ngIf="car.valid">
+                                Vehiculo:<br>{{car.vin_info.tipo_vehiculo}}
+                            </div>
+                            <div class="col text-center" *ngIf="car.valid">
+                                Embargos o Aseguramientos:<br>{{car.embargos}}
+                            </div>
+                            <div class="col text-center" *ngIf="car.valid">
+                                Delitos o Fraudes:<br>{{car.fraudes}}
+                            </div>
+                            </div>
+                            <div class="row">
+                            <hr *ngIf="!car.reviewA">
+                            <div class="col-md-12 text-center" *ngIf="!car.reviewA">
+                                Revisar
+                                <br>
+                                <button class="btn btn-sm btn-primary text-white" (click)="reviewA()"><i
+                                        class="fa-solid fa-check"></i></button>
+                            </div>
+                            <hr *ngIf="car.rapi_niv || car.rapi_noMotor|| car.repuve|| car.amis">
+                            <mat-tab-group fitInkBarToContent
+                                *ngIf="car.rapi_niv || car.rapi_noMotor|| car.repuve|| car.amis">
+                                <mat-tab label="RAPI" *ngIf="car.rapi_niv || car.rapi_noMotor">
+                                    <br>
+                                    <div class="col-md-10 offset-md-1">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h1 class="text-center">RAPI NIV</h1>
+                                                <p class="text-center">
+                                                    <i class="fa-solid fa-circle-check text-success"
+                                                        *ngIf="car.rapi_niv.report_rapi_vin"></i>
+                                                    <i class="fa-solid fa-circle-xmark text-danger"
+                                                        *ngIf="!car.rapi_niv.report_rapi_vin"></i>
+                                                </p>
+                                                <p class="text-center">{{car.rapi_niv.observations_rapi}}</p>
+                                                <p class="text-center" *ngIf="car.rapi_niv.observations_rapi == 'La pagina de RAPI esta fuera de servicio'"><button class="btn btn-sm btn-primary text-white" (click)="reviewA()"><i
+                                                    class="fa-solid fa-check"></i></button></p>
+                                            </div>
+                                            <div class="col">
+                                                <h1 class="text-center">RAPI # Motor</h1>
+                                                <p class="text-center">
+                                                    <i class="fa-solid fa-circle-check text-success"
+                                                        *ngIf="car.rapi_noMotor.report_rapi_motor"></i>
+                                                    <i class="fa-solid fa-circle-xmark text-danger"
+                                                        *ngIf="!car.rapi_noMotor.report_rapi_motor"></i>
+                                                </p>
+                                                <p class="text-center">{{car.rapi_noMotor.observations_rapi}}</p>
+                                                <p class="text-center" *ngIf="car.rapi_noMotor.observations_rapi == 'La pagina de RAPI esta fuera de servicio'"><button class="btn btn-sm btn-primary text-white" (click)="reviewA()"><i
+                                                    class="fa-solid fa-check"></i></button></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="Repuve" *ngIf="car.repuve">
+                                    <br>
+                                    <div class="col-md-10 offset-md-1">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h2 class="text-center">OCRA:<br> {{car.repuve.ocra}}</h2>
+                                            </div>
+                                            <div class="col">
+                                                <h2 class="text-center">PGJ:<br> {{car.repuve.pgj}}</h2>
+                                            </div>
+                                            <div class="col">
+                                                <h2 class="text-center">CARFAX:<br> {{car.repuve.carfax}}</h2>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4" *ngFor="let item of car.repuve.informacion[0]">
+                                                <h3 class="text-center" *ngIf="item.result">{{item.info}}<br>
+                                                    {{item.result}}</h3>
+                                                <h3 class="text-center" *ngIf="!item.result">{{item.info}}<br>-</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                                <mat-tab label="AMIS" *ngIf="car.amis">
+                                    <br>
+                                    <div class="col-md-10 offset-md-1">
+                                        <div class="row">
+                                            <div class="col">
+                                                <h2 class="text-center">{{car.amis.text}}</h2>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col">
+                                                <h2 class="text-center">Fecha Inicio:<br> {{car.amis.fecha_inicio}}</h2>
+                                            </div>
+                                            <div class="col">
+                                                <h2 class="text-center">Fecha Fin:<br> {{car.amis.fecha_fin}}</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+<ngx-spinner bdColor="rgba(0,0,0,0.8)" size="medium" color="#fff" type="ball-scale-multiple" [fullScreen]="true">
+    <p style="color: white"> Cargando... </p>
+</ngx-spinner>

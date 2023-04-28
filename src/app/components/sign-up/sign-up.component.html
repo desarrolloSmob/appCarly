@@ -1,0 +1,59 @@
+<div class="container-fluid">
+    <div class="row no-gutter">
+        <!-- The content half -->
+        <div class="col-md-12 bg-light" >
+            <div class="login d-flex align-items-center py-5" style="background: white !important;">
+                <!-- Demo content-->
+                <div class="container" >
+                    <div class="row">
+                        <div class="col-lg-10 col-xl-7 mx-auto" >
+                            <h3 class="display-4 text-center">Registro</h3>
+                            <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+                                <div class="form-group mb-3" >
+                                    <input id="inputName" type="text" formControlName="name"
+                                        [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+                                        placeholder="Nombre" required="" autofocus=""
+                                        class="form-control rounded-pill border-0 shadow-sm px-4">
+                                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                        <div *ngIf="f.email.errors.required">El nombre es requeirdo</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-3" >
+                                    <input id="inputEmail" type="email" formControlName="email"
+                                        [ngClass]="{ 'is-invalid': submitted && f.email.errors }"
+                                        placeholder="Correo electronico" required="" autofocus=""
+                                        class="form-control rounded-pill border-0 shadow-sm px-4">
+                                    <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                        <div *ngIf="f.email.errors.required">Correo electronico es requeirdo</div>
+                                        <div *ngIf="f.email.errors.email">
+                                            El correo electrónico debe ser una dirección de correo electrónico válida
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group mb-3">
+                                    <input id="inputPassword" type="password" formControlName="password"
+                                        [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+                                        placeholder="Contraseña" required=""
+                                        class="form-control rounded-pill border-0 shadow-sm px-4 text-dark">
+                                     <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                                        <div *ngIf="f.password.errors.required">Se requiere contraseña</div>
+                                    </div>
+                                </div>
+                            
+                            <div style="text-align: center;">
+                                <button type="submit" style="background: #000 ; color: white;"
+                                    class="btn btn-block text-uppercase mb-2 rounded-pill shadow-sm">
+                                    Registro</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div><!-- End -->
+            </div>
+        </div><!-- End -->
+    </div>
+</div>
+
+<ngx-spinner bdColor = "rgba(0,0,0,0.8)" size = "medium" color = "#fff" type = "ball-scale-multiple" [fullScreen] = "true"><p style="color: white" > Cargando... </p></ngx-spinner>

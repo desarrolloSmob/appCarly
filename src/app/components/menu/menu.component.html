@@ -1,0 +1,34 @@
+<img class="avatar mat-elevation-z8 myDiv" src="../../../assets/blank.png" />
+
+<h4 class="name">{{name}}</h4>
+<p class="designation">{{profile}}</p>
+
+<mat-divider></mat-divider>
+
+<button mat-button class="menu-button" routerLink="/requests">
+    <i class="fa-solid fa-file-pen"></i>
+    <span> Solicitudes</span>
+</button>
+<button *ngIf="profile == 'Administrador'" mat-button class="menu-button" routerLink="/dealers">
+    <i class="fa-solid fa-user-tie"></i>
+    <span> Distribuidores</span>
+</button>
+<button *ngIf="profile == 'Administrador'" mat-button class="menu-button" routerLink="/solicitudesFijas">
+    <i class="fa-solid fa-file-pen"></i>
+    <span>Solicitudes Fijas</span>
+</button>
+<button *ngIf="profile == 'Administrador'" mat-button class="menu-button" routerLink="/Provedrs">
+    <i class="fa-solid fa-user-tie"></i>
+    <span>Proveedores</span>
+</button>
+<button  *ngIf="profile == 'Administrador'" mat-button class="menu-button" routerLink="/profiles">
+    <i class="fa-solid fa-user-plus"></i>
+    <span> Perfiles</span>
+</button>
+
+<mat-divider></mat-divider>
+
+<button mat-button class="menu-button" (click)="authService.SignOut()">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    <span> Cerrar Sesión</span>
+</button>

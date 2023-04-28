@@ -1,0 +1,111 @@
+<mat-toolbar class="mat-elevation-z8">
+    <button mat-icon-button *ngIf="sidenav.mode === 'over'" (click)="sidenav.toggle()">
+        <mat-icon *ngIf="!sidenav.opened"> menu </mat-icon>
+        <mat-icon *ngIf="sidenav.opened"> close </mat-icon>
+    </button>
+    Solicitudes
+</mat-toolbar>
+
+<mat-sidenav-container>
+    <mat-sidenav #sidenav="matSidenav" class="mat-elevation-z8">
+        <app-menu name="{{name}}" profile="{{typeUser}}"></app-menu>
+    </mat-sidenav>
+    <mat-sidenav-content>
+        <div class="content mat-elevation-z8">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-10 offset-md-1">
+                        <div class="row">
+                            <div class="col">
+                                <mat-form-field appearance="fill" class="example-full-width">
+                                    <mat-label>Rango de fechas</mat-label>
+                                    <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+                                        <input matStartDate formControlName="start" placeholder="Start date">
+                                        <input matEndDate formControlName="end" placeholder="End date">
+                                    </mat-date-range-input>
+                                    <mat-hint>DD/MM/YYYY – DD/MM/YYYY</mat-hint>
+                                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                    <mat-date-range-picker #picker></mat-date-range-picker>
+                                </mat-form-field>
+                            </div>
+                            <div class="col" [formGroup]="range">
+                                <mat-form-field class="example-full-width" appearance="fill">
+                                    <mat-label>Estatus</mat-label>
+                                    <mat-select [(ngModel)]="searchEstado" formControlName="idGroup">
+                                        <mat-option>Todas</mat-option>
+                                        <mat-option value="Pendiente">Pendiente</mat-option>
+                                        <mat-option value="Revisado">Revisado</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Fecha</th>
+                                    <th scope="col">NIV</th>
+                                    <th scope="col"># Motor</th>
+                                    <th scope="col">Placa</th>
+                                    <th scope="col">Modelo</th>
+                                    <th scope="col">Estatus</th>
+                                    <th scope="col">Comentarios</th>
+                                    <th scope="col">Acciones</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr
+                                    *ngFor="let profile of dataProfiles | filter:searchProveedor | filter:searchDistribuidor | filter:searchEstado; let i = index">
+                                    <th>
+                                        {{profile.dateNow}}</th>
+                                    <td>
+                                        {{profile.niv}}</td>
+
+                                    <td>
+                                        {{profile.numMotor
+                                        }}</td>
+                                    <td>
+                                        {{profile.placa}} </td>
+                                    <td>
+                                        {{profile.vin_info.fabricante}} </td>
+                                    <td>
+                                        <span [ngClass]="{'red': profile.estatus == 'Pendiente',
+                                        'green': profile.estatus == 'Aprobada',
+                                        'blue': profile.estatus == 'En proceso'}">
+                                            {{profile.estatus}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        {{profile.comentarios}}</td>
+
+                                    <td>
+                                        <button class="btn btn-sm btn-warning text-white"
+                                        [routerLink]="['/car',profile.key]"><i
+                                            class="fa-solid fa-pen-to-square "></i></button>
+
+                                        <button class="btn btn-sm btn-primary text-white"><i
+                                                class="fa-solid fa-file"></i></button>
+
+                                        <!--(click)="openDialog(profile)" " -->
+                                        <button class="btn btn-sm btn-danger text-white"
+                                            (click)="deleteProfile(profile.key)"><i
+                                                class="fa-solid fa-trash-can "></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <a class="float" routerLink="/newRequest">
+                            <i class="fa fa-plus my-float"></i>
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+
+
+<ngx-spinner bdColor="rgba(0,0,0,0.8)" size="medium" color="#fff" type="ball-scale-multiple" [fullScreen]="true">
+    <p style="color: white"> Cargando... </p>
+</ngx-spinner>
